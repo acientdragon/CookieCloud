@@ -36,7 +36,7 @@ export async function browser_remove( key )
 export async function storage_set( key, value )
 {
     return new Promise((resolve, reject) => {
-        chrome.storage.local.set( {[key]:value}, function () {
+        browser.storage.local.set( {[key]:value}, function () {
           return resolve(true);
         });
       });
@@ -45,7 +45,7 @@ export async function storage_set( key, value )
 export async function storage_get( key )
 {
     return new Promise((resolve, reject) => {
-        chrome.storage.local.get([key], function (result) {
+        browser.storage.local.get([key], function (result) {
           if (result[key] === undefined) {
             resolve(null);
           } else {
@@ -58,7 +58,7 @@ export async function storage_get( key )
 export async function storage_remove( key )
 {
     return new Promise((resolve, reject) => {
-        chrome.storage.local.remove([key], function (result) {
+        browser.storage.local.remove([key], function (result) {
             resolve(result);
         });
       });
@@ -90,7 +90,7 @@ export async function browser_load_all(prefix=null)
 export async function load_all(prefix=null)
 {
     return new Promise((resolve, reject) => {
-        chrome.storage.local.get(null, function (result) {
+        browser.storage.local.get(null, function (result) {
             let ret = result;
             // 只返回以prefix开头的key对应的属性
             if( prefix )
@@ -130,7 +130,7 @@ export async function remove_data( key  )
 
 export async function save_data( key, data )
 {
-    // chrome.storage.local.set({key:JSON.stringify(data)});
+    // browser.storage.local.set({key:JSON.stringify(data)});
     const ret = browser?.storage ? await browser_set( key, JSON.stringify(data) )  : window.localStorage.setItem( key, JSON.stringify(data) );
     return ret;
 }
@@ -406,9 +406,9 @@ export function sleep(ms) {
 }
 
 export function showBadge(text, color = "red", delay = 5000) {
-    chrome.action.setBadgeText({text:text});
-    chrome.action.setBadgeBackgroundColor({color:color});
+    browser.action.setBadgeText({text:text});
+    browser.action.setBadgeBackgroundColor({color:color});
     setTimeout(() => {
-        chrome.action.setBadgeText({ text: '' });
+        browser.action.setBadgeText({ text: '' });
     }, delay);
 }
